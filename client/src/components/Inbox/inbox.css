@@ -1,0 +1,5 @@
+.inbox {
+    display: flex;
+    flex-direction: column;
+
+}
