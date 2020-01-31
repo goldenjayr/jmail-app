@@ -10,6 +10,7 @@
 }
 
 .card {
-    color: black;
+    color: #212529;
     text-align: left;
+    font-size: 1.1rem;
 }

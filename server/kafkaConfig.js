@@ -35,7 +35,7 @@ export default function kafkaStartClient() {
     sessionTimeout: 15000,
     protocol: ["roundrobin"],
     fetchMaxBytes: 1024 * 1024,
-    fromOffset: "earliest"
+    fromOffset: "latest"
   };
 
   const queryResultConsumerGroup = new kafka.ConsumerGroup(
