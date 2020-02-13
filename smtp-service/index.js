@@ -32,12 +32,27 @@ mailConsumer.on("message", async data => {
 
   const mailOptions = {
     from: "goldenjayr@gmail.com", // sender address
-    to, // list of receivers
+    to, // list of receiversss
     subject, // Subject line
     text // plain text body
   };
   transporter.sendMail(mailOptions, function(err, info) {
-    if (err) console.log(err);
+    if (err) {
+      console.log(err);
+      const payloads = [
+        {
+          topic: "query-result",
+          messages: JSON.stringify({ response: 'Error' })
+        }
+      ];
+
+      highLevelProducer.send(payloads, (err, data) => {
+        if (err) {
+          console.log("ERROR:", err);
+        }
+        console.log("PRODUCER DATA:", data);
+      });
+    }
     else {
       console.log(info);
       const payloads = [

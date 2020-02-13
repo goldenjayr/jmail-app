@@ -5,10 +5,10 @@ export const resolvers = {
       _,
       { mailInput },
       { queryResultConsumerGroup, highLevelProducer, pubsub }
-      ) => {
-        console.log("TCL: mailInput", mailInput);
-        const payloads = [
-          {
+    ) => {
+      console.log("TCL: mailInput", mailInput);
+      const payloads = [
+        {
           topic: "new-mail",
           messages: JSON.stringify(mailInput)
         }
@@ -18,22 +18,22 @@ export const resolvers = {
         if (err) {
           console.log("ERROR:", err);
         }
-        console.log("PRODUCER DATA:", data)
+        console.log("PRODUCER DATA:", data);
       });
 
       const result = new Promise((resolve, reject) => {
+        queryResultConsumerGroup.on("message", data => {
+          const value = JSON.parse(data.value);
 
-        queryResultConsumerGroup.on('message', data => {
-           const value = JSON.parse(data.value)
+          if (value.response.includes("OK")) {
+            resolve(value);
+          }
+        });
+      });
 
-           if(value.response.includes('OK')) {
-            pubsub.publish("new-mail", mailInput);
-            resolve(value)
-           }
-        })
-      })
+      pubsub.publish("new-mail", result);
 
-      return await result
+      return await result;
     }
   },
   Subscription: {
@@ -43,7 +43,7 @@ export const resolvers = {
         return payload;
       },
       subscribe: (_, __, { pubsub }) => {
-        return pubsub.asyncIterator("new-mail")
+        return pubsub.asyncIterator("new-mail");
       }
     }
   }

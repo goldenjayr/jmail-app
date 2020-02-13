@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Form, FormGroup, Input, Col, Button } from "reactstrap";
+import { Form, FormGroup, Input, Col, Button, Spinner } from "reactstrap";
 import { useMutation } from "react-apollo";
 import './composeMail.css'
 import { CREATE_MAIL } from "../queries";
@@ -8,9 +8,17 @@ function ComposeMail({username}) {
   const [email, setEmail] = useState("");
   const [subject, setSubject] = useState("");
   const [text, setText] = useState("");
+  const [sendLoading, setSendLoading] = useState(null)
 
-  const [createMail, { data }] = useMutation(CREATE_MAIL);
-
+  const [createMail, { data }] = useMutation(CREATE_MAIL, {
+    onCompleted: () => {
+      setSendLoading(<span className="message-sent">Message Sent</span>)
+      setTimeout(() => {
+        setSendLoading(null)
+      }, 2000)
+    }
+  });
+  console.log("Mutation data", data)
   return (
     <>
     <Form onSubmit={onSubmitHandler} className="compose-mail">
@@ -48,6 +56,9 @@ function ComposeMail({username}) {
       <Button type="submit" color="primary">
         Send
       </Button>
+      <span className="spinner">
+       {sendLoading}
+      </span>
     </Form>
     </>
   );
@@ -64,7 +75,7 @@ function ComposeMail({username}) {
         }
       }
     });
-
+    setSendLoading(<Spinner color="light" />)
     clearInputFields()
   }
 

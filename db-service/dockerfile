@@ -1,0 +1,26 @@
+# base image
+FROM node:12-slim
+
+RUN apt-get update && apt-get install \
+  build-essential python git -y && \
+  npm install --quiet node-gyp -g
+
+# set working directory
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+RUN npm install nodemon -g
+
+# install and cache app dependencies
+COPY package*.json /app
+# COPY package-lock.json /app/package-lock.json
+
+RUN npm install
+
+COPY . /app
+
+
+# start app
+CMD ["npm", "start"]

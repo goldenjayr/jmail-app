@@ -80,8 +80,9 @@ setupDatabase().then(({ pool }) => {
             subject: message.subject
         })
         .one();
-      await session.close();
+        await session.close();
 
+        console.log("TCL: result", result)
 
 
     //   const payloads = [

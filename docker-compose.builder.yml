@@ -1,0 +1,63 @@
+version: '2'
+
+services:
+    base_client:
+        image: node:11
+        volumes:
+            - ./client:/usr/src/service/client
+            - nodemodules:/usr/src/service/client/node_modules
+        working_dir: /usr/src/service/client
+
+    base_server:
+        image: node:11
+        volumes:
+            - ./server:/usr/src/service/server
+            - nodemodules:/usr/src/service/server/node_modules
+        working_dir: /usr/src/service/server
+
+    db-service:
+        image: node:11
+        volumes:
+            - nodemodules:/usr/src/service/db-service/node_modules
+            - ./db-service:/usr/src/service/db-service
+        working_dir: /usr/src/service/db-service
+
+    graphql-service:
+        image: node:11
+        volumes:
+            - nodemodules:/usr/src/service/server/node_modules
+            - ./server:/usr/src/service/server
+        working_dir: /usr/src/service/server
+
+    smtp-service:
+        image: node:11
+        volumes:
+            - nodemodules:/usr/src/service/smtp-service/node_modules
+            - ./smtp-service:/usr/src/service/smtp-service
+        working_dir: /usr/src/service/smtp-service
+
+    install_client:
+        extends:
+            service: base_client
+        command: npm i
+
+    install_db-service:
+        extends:
+            service: db-service
+        command: npm i
+
+    install_graphql-service:
+        extends:
+            service: graphql-service
+        command: npm i
+
+    install_smtp-service:
+        extends:
+            service: smtp-service
+        command: npm i
+
+
+
+volumes:
+    nodemodules:
+        external: true

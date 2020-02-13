@@ -1,9 +1,9 @@
-import kafka from "kafka-node";
-import util from "util";
+const kafka = require("kafka-node");
+const util = require("util");
 
-import { kafkaHost } from './Config/'
+const { kafkaHost } = require('./Config/')
 
-export default function kafkaStartClient() {
+module.exports = function kafkaStartClient() {
   const client = new kafka.KafkaClient({
     kafkaHost
   });

@@ -1,0 +1,44 @@
+version: '3'
+services:
+  client:
+    image: node:11
+    volumes:
+      - ./client:/usr/src/service/client
+    environment:
+      - NODE_ENV=development
+    network_mode: host
+    working_dir: /usr/src/service/client
+    command: bash -c "npm install && npm start"
+    ports:
+      - 3000:3000
+  db-service:
+    image: node:11
+    volumes:
+      - ./db-service:/usr/src/service/db-service
+    network_mode: host
+    environment:
+      - NODE_ENV=development
+    working_dir: /usr/src/service/db-service
+    command: bash -c "npm install && npm start"
+  graphql-service:
+    image: node:11
+    volumes:
+      - ./server:/usr/src/service/server
+    network_mode: host
+    environment:
+      - NODE_ENV=development
+    working_dir: /usr/src/service/server
+    command: bash -c "npm install && npm start"
+    ports:
+      - 4000:4000
+  smtp-service:
+    image: node:11
+    network_mode: host
+    volumes:
+      - ./smtp-service:/usr/src/service/smtp-service
+    environment:
+      - NODE_ENV=development
+    working_dir: /usr/src/service/smtp-service
+    command: bash -c "npm install && npm start"
+    ports:
+      - 5000:5000

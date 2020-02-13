@@ -1,11 +1,11 @@
-import { ApolloServer, PubSub } from "apollo-server-express";
+const { ApolloServer, PubSub } = require("apollo-server-express");
 
 const app = require("express")();
 const httpServer = require("http").createServer(app);
 
-import kafkaStartClient from "./kafkaConfig";
-import { typeDefs } from './typeDefs'
-import { resolvers } from './resolvers'
+const kafkaStartClient = require( "./kafkaConfig");
+const { typeDefs } = require('./typeDefs')
+const { resolvers } = require('./resolvers')
 
 const { highLevelProducer, queryResultConsumerGroup } = kafkaStartClient();
 
